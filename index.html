@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nossa Organização · Prado & Godoy</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -17,8 +18,6 @@
     --text: #212121; --text2: #555;
   }
   body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-  /* HEADER */
   header {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
     color: white; padding: 18px 30px; display: flex; align-items: center; justify-content: space-between;
@@ -30,13 +29,10 @@
   .logo-text p { font-size: 0.78rem; opacity: 0.7; letter-spacing: 2px; text-transform: uppercase; }
   .header-right { display: flex; align-items: center; gap: 12px; }
   .month-selector { display: flex; align-items: center; gap: 8px; }
-  .month-selector select, .month-selector input {
+  .month-selector input {
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
     color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; cursor: pointer;
   }
-  .month-selector select option { background: #1a1a2e; }
-
-  /* TABS */
   .tabs { display: flex; background: #fff; border-bottom: 2px solid var(--border); padding: 0 30px; overflow-x: auto; }
   .tab {
     padding: 14px 24px; cursor: pointer; font-weight: 600; font-size: 0.88rem;
@@ -45,50 +41,34 @@
   }
   .tab:hover { color: var(--blue); }
   .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
-
-  /* MAIN */
   main { padding: 24px 30px; max-width: 1400px; margin: 0 auto; }
   .page { display: none; }
   .page.active { display: block; }
-
-  /* CARDS RESUMO */
   .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .card {
-    background: var(--card); border-radius: 14px; padding: 20px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 5px solid;
-  }
+  .card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 5px solid; }
   .card.green { border-color: var(--green-mid); }
   .card.red { border-color: var(--red-mid); }
   .card.blue { border-color: var(--blue); }
   .card.gold { border-color: var(--gold); }
+  .card.purple { border-color: var(--purple); }
   .card .label { font-size: 0.78rem; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
   .card .value { font-size: 1.6rem; font-weight: 700; }
   .card.green .value { color: var(--green); }
   .card.red .value { color: var(--red); }
   .card.blue .value { color: var(--blue); }
   .card.gold .value { color: #e65100; }
+  .card.purple .value { color: var(--purple); }
   .card .sub { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
-
-  /* GRID SECTIONS */
   .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   @media(max-width: 900px) { .sections-grid { grid-template-columns: 1fr; } }
-
   .section-box { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-  .section-header {
-    padding: 14px 20px; display: flex; align-items: center; gap: 10px;
-    font-weight: 700; font-size: 0.95rem; color: white;
-  }
+  .section-header { padding: 14px 20px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; color: white; flex-wrap: wrap; }
   .section-header.ganhos { background: var(--green); }
   .section-header.fixas { background: var(--red); }
   .section-header.variaveis { background: #e65100; }
   .section-header.doacoes { background: var(--purple); }
-
   .section-table { width: 100%; border-collapse: collapse; }
-  .section-table thead th {
-    background: #fafafa; padding: 9px 14px; font-size: 0.8rem;
-    text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2);
-    border-bottom: 1px solid var(--border); text-align: left;
-  }
+  .section-table thead th { background: #fafafa; padding: 9px 14px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); border-bottom: 1px solid var(--border); text-align: left; }
   .section-table thead th:last-child { text-align: right; }
   .section-table tbody tr:hover { background: #fafafa; }
   .section-table td { padding: 9px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem; }
@@ -100,24 +80,14 @@
   }
   .section-table td input:focus { background: #e3f2fd; }
   .section-table td input[type="number"] { text-align: right; }
-  .section-total td {
-    background: #fafafa; font-weight: 700; font-size: 0.88rem;
-    color: var(--text); border-top: 2px solid var(--border);
-  }
+  .section-total td { background: #fafafa; font-weight: 700; font-size: 0.88rem; color: var(--text); border-top: 2px solid var(--border); }
   .section-total td:last-child { font-size: 1rem; }
   .total-green { color: var(--green) !important; }
   .total-red { color: var(--red) !important; }
   .total-orange { color: #e65100 !important; }
   .total-purple { color: var(--purple) !important; }
-
-  .add-row-btn {
-    display: block; width: 100%; padding: 8px; text-align: center;
-    background: none; border: none; color: #aaa; font-size: 0.82rem; cursor: pointer;
-    transition: all 0.2s; border-top: 1px dashed #e0e0e0;
-  }
+  .add-row-btn { display: block; width: 100%; padding: 8px; text-align: center; background: none; border: none; color: #aaa; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; border-top: 1px dashed #e0e0e0; }
   .add-row-btn:hover { background: #f5f5f5; color: var(--blue); }
-
-  /* SALDO FINAL */
   .saldo-box {
     background: linear-gradient(135deg, #1565c0, #0d47a1);
     border-radius: 14px; padding: 24px 30px; color: white; margin-top: 22px;
@@ -131,14 +101,9 @@
   .invest-highlight { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 20px; }
   .invest-highlight .lbl { font-size: 0.78rem; opacity: 0.8; }
   .invest-highlight .val { font-size: 2rem; font-weight: 800; color: #69f0ae; }
-
-  /* ANUAL */
   .anual-table-wrap { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
   .anual-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
-  .anual-table th {
-    background: #1a1a2e; color: white; padding: 11px 14px; text-align: center; font-size: 0.8rem;
-    position: sticky; top: 0;
-  }
+  .anual-table th { background: #1a1a2e; color: white; padding: 11px 14px; text-align: center; font-size: 0.8rem; position: sticky; top: 0; }
   .anual-table th:first-child { text-align: left; }
   .anual-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; text-align: center; }
   .anual-table td:first-child { text-align: left; font-weight: 600; }
@@ -146,33 +111,26 @@
   .anual-table tr.total-row td { background: #e8f5e9; font-weight: 700; color: var(--green); border-top: 2px solid var(--border); }
   .anual-table tr.gasto-row td { background: #ffebee; font-weight: 700; color: var(--red); }
   .anual-table tr.invest-row td { background: #e3f2fd; font-weight: 700; color: var(--blue); font-size: 0.9rem; }
-  .anual-table tr.saldo-row td { background: #fffde7; font-weight: 700; color: #e65100; }
   .anual-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
-
-  /* DOAÇÕES FULL WIDTH */
-  .full-width { grid-column: 1 / -1; }
-  .doacoes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .doacoes-grid > div { padding: 16px; }
-  .doacoes-grid > div:first-child { border-right: 1px solid var(--border); }
-
-  /* BADGE */
-  .badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; margin-left: 6px; }
-  .badge.p1 { background: #e3f2fd; color: var(--blue); }
-  .badge.p2 { background: #fce4ec; color: #c2185b; }
-
   .nav-months { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 30px; background: white; border-bottom: 1px solid var(--border); }
-  .nav-month-btn {
-    padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border);
-    background: white; cursor: pointer; font-size: 0.82rem; font-weight: 500; color: var(--text2); transition: all 0.2s;
-  }
+  .nav-month-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.82rem; font-weight: 500; color: var(--text2); transition: all 0.2s; }
   .nav-month-btn:hover { border-color: var(--blue); color: var(--blue); }
   .nav-month-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
   .has-data { border-color: var(--green-mid); color: var(--green); }
-
   .section-person { font-size: 0.75rem; opacity: 0.85; font-weight: 400; margin-left: 6px; }
-  .fmt-currency { font-weight: 600; }
-  .positive { color: var(--green); }
-  .negative { color: var(--red); }
+  /* EXPORT TOOLBAR */
+  .export-toolbar { display: flex; gap: 10px; align-items: center; padding: 10px 30px; background: #fff; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .export-toolbar span { font-size: 0.82rem; color: var(--text2); font-weight: 600; }
+  .export-btn { display: flex; align-items: center; gap: 6px; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .export-btn:hover { filter: brightness(0.88); transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
+  .btn-green { background: #2e7d32; }
+  .btn-blue { background: #1565c0; }
+  .btn-purple { background: #6a1b9a; }
+  /* AUTO DOAÇÕES */
+  .auto-badge { font-size: 0.68rem; background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 12px; font-weight: 500; margin-left: 4px; }
+  .doacoes-auto-row td { background: #f3e5f5 !important; }
+  .doacoes-auto-row input { color: var(--purple) !important; font-weight: 700 !important; background: transparent !important; }
+  .doacoes-note { font-size: 0.72rem; color: var(--purple); padding: 6px 14px 8px; font-style: italic; background: #faf0ff; }
 </style>
 </head>
 <body>
@@ -194,18 +152,25 @@
 </header>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('mensal')">📅 Controle Mensal</div>
-  <div class="tab" onclick="showTab('anual')">📊 Resumo Anual</div>
+  <div class="tab active" onclick="showTab('mensal',event)">📅 Controle Mensal</div>
+  <div class="tab" onclick="showTab('anual',event)">📊 Resumo Anual</div>
 </div>
 
 <div class="nav-months" id="navMonths"></div>
+
+<div class="export-toolbar">
+  <span>📥 Exportar:</span>
+  <button class="export-btn btn-green" onclick="exportExcelMes()">📊 Excel — Mês Atual</button>
+  <button class="export-btn btn-blue" onclick="exportExcelAnual()">📊 Excel — Ano Completo</button>
+  <button class="export-btn btn-purple" onclick="exportBackup()">💾 Backup Completo (JSON)</button>
+</div>
 
 <!-- PAGE MENSAL -->
 <div class="page active" id="page-mensal">
   <main>
     <div class="summary-cards" id="summaryCards"></div>
-
     <div class="sections-grid">
+
       <!-- GANHOS -->
       <div class="section-box">
         <div class="section-header ganhos">💵 Ganhos / Salários</div>
@@ -219,13 +184,14 @@
 
       <!-- DOAÇÕES -->
       <div class="section-box">
-        <div class="section-header doacoes">🙏 Doações</div>
+        <div class="section-header doacoes">🙏 Doações <span class="auto-badge">✨ Dízimo e SOS Bichos = automático</span></div>
         <table class="section-table" id="tbl-doacoes">
           <thead><tr><th>O quê?</th><th style="width:80px">Dia</th><th style="width:130px">Valor (R$)</th></tr></thead>
           <tbody></tbody>
           <tfoot><tr class="section-total"><td colspan="2">TOTAL DOAÇÕES</td><td class="total-purple" id="total-doacoes">R$ 0,00</td></tr></tfoot>
         </table>
-        <button class="add-row-btn" onclick="addRow('doacoes')">+ Adicionar linha</button>
+        <div class="doacoes-note">💡 Dízimo/Igreja e SOS Bichos calculados automaticamente: 5% das entradas cada (10% total)</div>
+        <button class="add-row-btn" onclick="addRow('doacoes')">+ Adicionar doação extra</button>
       </div>
 
       <!-- DESPESAS FIXAS -->
@@ -252,21 +218,14 @@
     </div>
 
     <!-- SALDO FINAL -->
-    <div class="saldo-box" id="saldoBox">
-      <div class="item">
-        <div class="lbl">💵 Total Entradas</div>
-        <div class="val" id="sb-entradas">R$ 0,00</div>
-      </div>
+    <div class="saldo-box">
+      <div class="item"><div class="lbl">💵 Total Entradas</div><div class="val" id="sb-entradas">R$ 0,00</div></div>
       <div class="divider"></div>
-      <div class="item">
-        <div class="lbl">📤 Total Gastos</div>
-        <div class="val" id="sb-gastos">R$ 0,00</div>
-      </div>
+      <div class="item"><div class="lbl">📤 Total Gastos</div><div class="val" id="sb-gastos">R$ 0,00</div></div>
       <div class="divider"></div>
-      <div class="item">
-        <div class="lbl">📊 % Comprometido</div>
-        <div class="val" id="sb-pct">0%</div>
-      </div>
+      <div class="item"><div class="lbl">🙏 Doações (10%)</div><div class="val" id="sb-doacoes">R$ 0,00</div></div>
+      <div class="divider"></div>
+      <div class="item"><div class="lbl">📊 % Comprometido</div><div class="val" id="sb-pct">0%</div></div>
       <div class="divider"></div>
       <div class="invest-highlight">
         <div class="lbl">🚀 Disponível para Investir</div>
@@ -282,10 +241,7 @@
   <main>
     <div class="anual-summary-cards" id="anualCards"></div>
     <div class="anual-table-wrap" style="overflow-x:auto">
-      <table class="anual-table" id="anualTable">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
+      <table class="anual-table" id="anualTable"><thead></thead><tbody></tbody></table>
     </div>
   </main>
 </div>
@@ -294,220 +250,199 @@
 const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const MONTHS_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
+// Índices das linhas de doações automáticas (Dízimo e SOS Bichos)
+const AUTO_DOACOES = ['Dízimo / Igreja', 'SOS Bichos'];
+
 const DEFAULT_ROWS = {
   ganhos:    [{desc:'Salário - Pessoa 1',dia:''},{desc:'Salário - Pessoa 2',dia:''}],
   fixas:     [{desc:'Financiamento / Aluguel',dia:'3'},{desc:'Condomínio',dia:'10'},{desc:'Luz Apartamento',dia:'15'},{desc:'Internet / Claro',dia:'20'},{desc:'Plano de Saúde - P1',dia:'10'},{desc:'Plano de Saúde - P2',dia:'10'},{desc:'IPTU',dia:''},{desc:'DAS / MEI - P1',dia:''},{desc:'DAS / MEI - P2',dia:''},{desc:'Luz Sobrado',dia:''},{desc:'Gás',dia:''},{desc:'Tim / Celular - P1',dia:'10'},{desc:'Tim / Celular - P2',dia:'10'},{desc:'Cartão de Crédito',dia:'10'}],
   variaveis: [{desc:'Cartão Mercado Pago - P1',dia:''},{desc:'Cartão Mercado Pago - P2',dia:''},{desc:'Santander / Banco',dia:''},{desc:'Cheque',dia:''},{desc:'Combustível',dia:''},{desc:'Lazer / Saídas',dia:''},{desc:'Outros',dia:''}],
-  doacoes:   [{desc:'Dízimo / Igreja',dia:''},{desc:'SOS Bichos',dia:''}]
+  doacoes:   [{desc:'Dízimo / Igreja',dia:'',val:'',auto:true},{desc:'SOS Bichos',dia:'',val:'',auto:true}]
 };
 
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 
-function dataKey(y, m) { return `pg_${y}_${m}`; }
+function dataKey(y,m){ return `pg_${y}_${m}`; }
 
-function loadData(y, m) {
-  const key = dataKey(y, m);
-  const raw = localStorage.getItem(key);
-  if (raw) return JSON.parse(raw);
-  const d = {};
-  for (const sec in DEFAULT_ROWS) {
-    d[sec] = DEFAULT_ROWS[sec].map(r => ({desc: r.desc, dia: r.dia, val: ''}));
+function loadData(y,m){
+  const raw = localStorage.getItem(dataKey(y,m));
+  if(raw) return JSON.parse(raw);
+  const d={};
+  for(const sec in DEFAULT_ROWS){
+    d[sec]=DEFAULT_ROWS[sec].map(r=>({desc:r.desc,dia:r.dia,val:'',auto:r.auto||false}));
   }
   return d;
 }
 
-function saveData(y, m, d) {
-  localStorage.setItem(dataKey(y, m), JSON.stringify(d));
+function saveData(y,m,d){
+  localStorage.setItem(dataKey(y,m),JSON.stringify(d));
   updateNavMonths();
   updateAnual();
 }
 
-function fmt(v) {
-  return 'R$ ' + parseFloat(v||0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+function fmt(v){ return 'R$ '+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function fmtNum(v){ return parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function parseVal(s){ if(!s) return 0; return parseFloat(String(s).replace(/[^\d,\.]/g,'').replace(',','.')) || 0; }
+function getTotal(sec,d){ return (d[sec]||[]).reduce((a,r)=>a+parseVal(r.val),0); }
+
+function autoCalcDoacoes(d){
+  const tG = getTotal('ganhos',d);
+  const pct5 = tG * 0.05;
+  (d.doacoes||[]).forEach(r=>{
+    if(r.auto) r.val = pct5.toFixed(2);
+  });
+  return d;
 }
 
-function parseVal(s) {
-  if (!s) return 0;
-  return parseFloat(String(s).replace(/[^\d,\.]/g,'').replace(',','.')) || 0;
-}
-
-function getTotal(sec, d) {
-  return (d[sec] || []).reduce((a, r) => a + parseVal(r.val), 0);
-}
-
-function renderSection(sec, d) {
+function renderSection(sec, d){
   const tbody = document.querySelector(`#tbl-${sec} tbody`);
-  tbody.innerHTML = '';
-  (d[sec] || []).forEach((row, i) => {
+  tbody.innerHTML='';
+  (d[sec]||[]).forEach((row,i)=>{
     const tr = document.createElement('tr');
+    const isAuto = row.auto === true;
+    if(isAuto) tr.classList.add('doacoes-auto-row');
+    const autoMark = isAuto ? ' <span style="font-size:0.68rem;color:#6a1b9a;font-weight:600">⚡ auto</span>' : '';
+    const delBtn = isAuto ? '' : `<span style="cursor:pointer;color:#ccc;margin-left:4px;font-size:0.75rem" onclick="removeRow('${sec}',${i})">✕</span>`;
     tr.innerHTML = `
-      <td><input type="text" value="${row.desc||''}" placeholder="Descrição" onchange="updateRow('${sec}',${i},'desc',this.value)">
-          <span style="cursor:pointer;color:#ccc;margin-left:4px;font-size:0.75rem" onclick="removeRow('${sec}',${i})">✕</span></td>
+      <td>
+        <input type="text" value="${row.desc||''}" placeholder="Descrição" ${isAuto?'readonly style="font-weight:700;color:#6a1b9a"':''} onchange="updateRow('${sec}',${i},'desc',this.value)">
+        ${autoMark}${delBtn}
+      </td>
       <td><input type="text" value="${row.dia||''}" placeholder="Dia" style="text-align:center" onchange="updateRow('${sec}',${i},'dia',this.value)"></td>
-      <td><input type="number" value="${row.val||''}" placeholder="0,00" min="0" step="0.01" onchange="updateRow('${sec}',${i},'val',this.value)" oninput="updateRow('${sec}',${i},'val',this.value)"></td>
+      <td><input type="number" value="${row.val||''}" placeholder="0,00" min="0" step="0.01" ${isAuto?'readonly':''}
+        onchange="updateRow('${sec}',${i},'val',this.value)" oninput="updateRow('${sec}',${i},'val',this.value)"></td>
     `;
     tbody.appendChild(tr);
   });
   updateTotals();
 }
 
-function updateRow(sec, i, field, val) {
-  const d = loadData(currentYear, currentMonth);
-  d[sec][i][field] = val;
-  saveData(currentYear, currentMonth, d);
+function updateRow(sec,i,field,val){
+  const d = loadData(currentYear,currentMonth);
+  if(d[sec][i].auto && field==='val') return; // protect auto rows
+  d[sec][i][field]=val;
+  saveData(currentYear,currentMonth,d);
   updateTotals();
 }
 
-function addRow(sec) {
-  const d = loadData(currentYear, currentMonth);
-  d[sec].push({desc:'', dia:'', val:''});
-  saveData(currentYear, currentMonth, d);
-  renderSection(sec, d);
+function addRow(sec){
+  const d = loadData(currentYear,currentMonth);
+  d[sec].push({desc:'',dia:'',val:'',auto:false});
+  saveData(currentYear,currentMonth,d);
+  renderSection(sec,d);
 }
 
-function removeRow(sec, i) {
-  const d = loadData(currentYear, currentMonth);
-  d[sec].splice(i, 1);
-  saveData(currentYear, currentMonth, d);
-  renderSection(sec, d);
+function removeRow(sec,i){
+  const d = loadData(currentYear,currentMonth);
+  if(d[sec][i].auto) return;
+  d[sec].splice(i,1);
+  saveData(currentYear,currentMonth,d);
+  renderSection(sec,d);
 }
 
-function updateTotals() {
-  const d = loadData(currentYear, currentMonth);
-  const tG = getTotal('ganhos', d);
-  const tF = getTotal('fixas', d);
-  const tV = getTotal('variaveis', d);
-  const tD = getTotal('doacoes', d);
-  const tGastos = tF + tV + tD;
-  const saldo = tG - tGastos;
-  const pct = tG > 0 ? (tGastos/tG*100) : 0;
+function updateTotals(){
+  let d = loadData(currentYear,currentMonth);
+  d = autoCalcDoacoes(d);
+  saveData(currentYear,currentMonth,d);
 
-  document.getElementById('total-ganhos').textContent = fmt(tG);
-  document.getElementById('total-fixas').textContent = fmt(tF);
-  document.getElementById('total-variaveis').textContent = fmt(tV);
-  document.getElementById('total-doacoes').textContent = fmt(tD);
+  const tG = getTotal('ganhos',d);
+  const tF = getTotal('fixas',d);
+  const tV = getTotal('variaveis',d);
+  const tD = getTotal('doacoes',d);
+  const tGastos = tF+tV+tD;
+  const saldo = tG-tGastos;
+  const pct = tG>0?(tGastos/tG*100):0;
 
-  document.getElementById('sb-entradas').textContent = fmt(tG);
-  document.getElementById('sb-gastos').textContent = fmt(tGastos);
-  document.getElementById('sb-pct').textContent = pct.toFixed(1) + '%';
-  document.getElementById('sb-invest').textContent = fmt(Math.max(0, saldo));
-  document.getElementById('sb-saldo-label').textContent = saldo < 0 ? '⚠️ Déficit no mês!' : 'Disponível / Investimento';
-  document.getElementById('sb-invest').style.color = saldo >= 0 ? '#69f0ae' : '#ff8a80';
+  document.getElementById('total-ganhos').textContent=fmt(tG);
+  document.getElementById('total-fixas').textContent=fmt(tF);
+  document.getElementById('total-variaveis').textContent=fmt(tV);
+  document.getElementById('total-doacoes').textContent=fmt(tD);
+  document.getElementById('sb-entradas').textContent=fmt(tG);
+  document.getElementById('sb-gastos').textContent=fmt(tGastos);
+  document.getElementById('sb-doacoes').textContent=fmt(tD);
+  document.getElementById('sb-pct').textContent=pct.toFixed(1)+'%';
+  document.getElementById('sb-invest').textContent=fmt(Math.max(0,saldo));
+  document.getElementById('sb-saldo-label').textContent=saldo<0?'⚠️ Déficit no mês!':'Disponível / Investimento';
+  document.getElementById('sb-invest').style.color=saldo>=0?'#69f0ae':'#ff8a80';
 
-  renderSummaryCards(tG, tGastos, saldo, pct);
+  renderSummaryCards(tG,tGastos,tD,saldo,pct);
 }
 
-function renderSummaryCards(tG, tGastos, saldo, pct) {
-  document.getElementById('summaryCards').innerHTML = `
-    <div class="card green">
-      <div class="label">💵 Total de Entradas</div>
-      <div class="value">${fmt(tG)}</div>
-      <div class="sub">Soma dos salários</div>
-    </div>
-    <div class="card red">
-      <div class="label">📤 Total de Gastos</div>
-      <div class="value">${fmt(tGastos)}</div>
-      <div class="sub">Fixas + Variáveis + Doações</div>
-    </div>
-    <div class="card blue">
-      <div class="label">📊 Comprometido</div>
-      <div class="value">${pct.toFixed(1)}%</div>
-      <div class="sub">Da renda total</div>
-    </div>
-    <div class="card gold">
-      <div class="label">🚀 Para Investir</div>
-      <div class="value" style="color:${saldo>=0?'#2e7d32':'#c62828'}">${fmt(Math.max(0,saldo))}</div>
-      <div class="sub">${saldo < 0 ? '⚠️ Déficit: ' + fmt(Math.abs(saldo)) : 'Saldo livre'}</div>
-    </div>
+function renderSummaryCards(tG,tGastos,tD,saldo,pct){
+  document.getElementById('summaryCards').innerHTML=`
+    <div class="card green"><div class="label">💵 Total de Entradas</div><div class="value">${fmt(tG)}</div><div class="sub">Soma dos salários</div></div>
+    <div class="card red"><div class="label">📤 Total de Gastos</div><div class="value">${fmt(tGastos)}</div><div class="sub">Fixas + Variáveis + Doações</div></div>
+    <div class="card purple"><div class="label">🙏 Doações (10%)</div><div class="value">${fmt(tD)}</div><div class="sub">5% Dízimo + 5% SOS Bichos</div></div>
+    <div class="card blue"><div class="label">📊 Comprometido</div><div class="value">${pct.toFixed(1)}%</div><div class="sub">Da renda total</div></div>
+    <div class="card gold"><div class="label">🚀 Para Investir</div><div class="value" style="color:${saldo>=0?'#2e7d32':'#c62828'}">${fmt(Math.max(0,saldo))}</div><div class="sub">${saldo<0?'⚠️ Déficit: '+fmt(Math.abs(saldo)):'Saldo livre'}</div></div>
   `;
 }
 
-function renderAll() {
-  const d = loadData(currentYear, currentMonth);
-  renderSection('ganhos', d);
-  renderSection('fixas', d);
-  renderSection('variaveis', d);
-  renderSection('doacoes', d);
+function renderAll(){
+  let d = loadData(currentYear,currentMonth);
+  d = autoCalcDoacoes(d);
+  renderSection('ganhos',d);
+  renderSection('fixas',d);
+  renderSection('variaveis',d);
+  renderSection('doacoes',d);
   updateTotals();
   updateNavMonths();
 }
 
-function updateNavMonths() {
+function updateNavMonths(){
   const nav = document.getElementById('navMonths');
-  nav.innerHTML = '';
-  MONTHS.forEach((m, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'nav-month-btn' + (i === currentMonth ? ' active' : '');
-    const hasData = localStorage.getItem(dataKey(currentYear, i));
-    if (hasData && i !== currentMonth) btn.classList.add('has-data');
-    btn.textContent = m;
-    btn.onclick = () => { currentMonth = i; renderAll(); updateNavMonths(); };
+  nav.innerHTML='';
+  MONTHS.forEach((m,i)=>{
+    const btn=document.createElement('button');
+    btn.className='nav-month-btn'+(i===currentMonth?' active':'');
+    const hasData=localStorage.getItem(dataKey(currentYear,i));
+    if(hasData&&i!==currentMonth) btn.classList.add('has-data');
+    btn.textContent=m;
+    btn.onclick=()=>{currentMonth=i;renderAll();updateNavMonths();};
     nav.appendChild(btn);
   });
 }
 
-function showTab(tab) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+function showTab(tab,event){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   event.target.classList.add('active');
-  document.getElementById('page-' + tab).classList.add('active');
-  if (tab === 'anual') updateAnual();
+  document.getElementById('page-'+tab).classList.add('active');
+  if(tab==='anual') updateAnual();
 }
 
-function updateAnual() {
-  const tbody = document.querySelector('#anualTable tbody');
-  const thead = document.querySelector('#anualTable thead');
-  const rows = {
-    entradas: [], fixas: [], variaveis: [], doacoes: [], gastos: [], saldo: []
-  };
-
-  MONTHS_SHORT.forEach((m, i) => {
-    const d = loadData(currentYear, i);
-    const tG = getTotal('ganhos', d);
-    const tF = getTotal('fixas', d);
-    const tV = getTotal('variaveis', d);
-    const tD = getTotal('doacoes', d);
-    const tGastos = tF + tV + tD;
-    rows.entradas.push(tG);
-    rows.fixas.push(tF);
-    rows.variaveis.push(tV);
-    rows.doacoes.push(tD);
-    rows.gastos.push(tGastos);
-    rows.saldo.push(tG - tGastos);
+function updateAnual(){
+  const tbody=document.querySelector('#anualTable tbody');
+  const thead=document.querySelector('#anualTable thead');
+  const rows={entradas:[],fixas:[],variaveis:[],doacoes:[],gastos:[],saldo:[]};
+  MONTHS_SHORT.forEach((m,i)=>{
+    let d=loadData(currentYear,i);
+    d=autoCalcDoacoes(d);
+    const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
+    const tGastos=tF+tV+tD;
+    rows.entradas.push(tG);rows.fixas.push(tF);rows.variaveis.push(tV);
+    rows.doacoes.push(tD);rows.gastos.push(tGastos);rows.saldo.push(tG-tGastos);
   });
-
-  const sumRow = (arr) => arr.reduce((a,b) => a+b, 0);
-  const fmtSmall = v => parseFloat(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
-
-  thead.innerHTML = `<tr>
-    <th>Categoria</th>
-    ${MONTHS_SHORT.map(m => `<th>${m}</th>`).join('')}
-    <th>TOTAL ANO</th>
-  </tr>`;
-
-  const tableRows = [
-    { label: '💵 Total Entradas', key: 'entradas', cls: 'total-row' },
-    { label: '🏠 Despesas Fixas', key: 'fixas', cls: '' },
-    { label: '💳 Despesas Variáveis', key: 'variaveis', cls: '' },
-    { label: '🙏 Doações', key: 'doacoes', cls: '' },
-    { label: '📤 Total Gastos', key: 'gastos', cls: 'gasto-row' },
-    { label: '🚀 Disponível p/ Investir', key: 'saldo', cls: 'invest-row' },
+  const sumRow=arr=>arr.reduce((a,b)=>a+b,0);
+  thead.innerHTML=`<tr><th>Categoria</th>${MONTHS_SHORT.map(m=>`<th>${m}</th>`).join('')}<th>TOTAL ANO</th></tr>`;
+  const tableRows=[
+    {label:'💵 Total Entradas',key:'entradas',cls:'total-row'},
+    {label:'🏠 Despesas Fixas',key:'fixas',cls:''},
+    {label:'💳 Despesas Variáveis',key:'variaveis',cls:''},
+    {label:'🙏 Doações (10% auto)',key:'doacoes',cls:''},
+    {label:'📤 Total Gastos',key:'gastos',cls:'gasto-row'},
+    {label:'🚀 Disponível p/ Investir',key:'saldo',cls:'invest-row'},
   ];
-
-  tbody.innerHTML = tableRows.map(row => `
+  tbody.innerHTML=tableRows.map(row=>`
     <tr class="${row.cls}">
       <td>${row.label}</td>
-      ${rows[row.key].map(v => `<td>R$ ${fmtSmall(v)}</td>`).join('')}
-      <td><strong>R$ ${fmtSmall(sumRow(rows[row.key]))}</strong></td>
-    </tr>
-  `).join('');
-
-  const totalE = sumRow(rows.entradas);
-  const totalG = sumRow(rows.gastos);
-  const totalS = sumRow(rows.saldo);
-  const bestMonth = rows.saldo.indexOf(Math.max(...rows.saldo));
-  document.getElementById('anualCards').innerHTML = `
+      ${rows[row.key].map(v=>`<td>R$ ${fmtNum(v)}</td>`).join('')}
+      <td><strong>R$ ${fmtNum(sumRow(rows[row.key]))}</strong></td>
+    </tr>`).join('');
+  const totalE=sumRow(rows.entradas),totalG=sumRow(rows.gastos),totalS=sumRow(rows.saldo);
+  const bestMonth=rows.saldo.indexOf(Math.max(...rows.saldo));
+  document.getElementById('anualCards').innerHTML=`
     <div class="card green"><div class="label">💵 Entradas no Ano</div><div class="value">${fmt(totalE)}</div><div class="sub">Soma dos 12 meses</div></div>
     <div class="card red"><div class="label">📤 Gastos no Ano</div><div class="value">${fmt(totalG)}</div><div class="sub">Todos os gastos</div></div>
     <div class="card gold"><div class="label">🚀 Investido/Acumulado</div><div class="value" style="color:${totalS>=0?'#2e7d32':'#c62828'}">${fmt(totalS)}</div><div class="sub">Saldo total do ano</div></div>
@@ -515,13 +450,120 @@ function updateAnual() {
   `;
 }
 
-document.getElementById('yearInput').value = currentYear;
-document.getElementById('yearInput').addEventListener('change', function() {
-  currentYear = parseInt(this.value) || new Date().getFullYear();
+// ============ EXPORTAR EXCEL - MÊS ATUAL ============
+function exportExcelMes(){
+  let d = loadData(currentYear,currentMonth);
+  d = autoCalcDoacoes(d);
+  const wb = XLSX.utils.book_new();
+  const mesNome = MONTHS[currentMonth]+' '+currentYear;
+
+  const addSheet = (sec, titulo) => {
+    const rows = [[titulo,'Dia','Valor (R$)']];
+    (d[sec]||[]).forEach(r=>rows.push([r.desc||'',r.dia||'',parseVal(r.val)||0]));
+    rows.push(['']);
+    rows.push(['TOTAL','',getTotal(sec,d)]);
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols']=[{wch:35},{wch:8},{wch:14}];
+    XLSX.utils.book_append_sheet(wb,ws,titulo.substring(0,31));
+  };
+
+  addSheet('ganhos','Ganhos');
+  addSheet('fixas','Despesas Fixas');
+  addSheet('variaveis','Despesas Variáveis');
+  addSheet('doacoes','Doações');
+
+  // Resumo
+  const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
+  const tGastos=tF+tV+tD,saldo=tG-tGastos;
+  const resumo=[
+    ['RESUMO - '+mesNome,''],['',''],
+    ['Total Entradas',tG],['Total Fixas',tF],['Total Variáveis',tV],
+    ['Total Doações (10% auto)',tD],['',''],
+    ['TOTAL GASTOS',tGastos],['% Comprometido',tG>0?(tGastos/tG*100).toFixed(1)+'%':'0%'],
+    ['DISPONÍVEL PARA INVESTIR',saldo],
+    ['',''],['Dízimo / Igreja (5%)',tG*0.05],['SOS Bichos (5%)',tG*0.05],
+  ];
+  const wsR=XLSX.utils.aoa_to_sheet(resumo);
+  wsR['!cols']=[{wch:30},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,wsR,'Resumo');
+
+  XLSX.writeFile(wb,`PradoGodoy_${MONTHS[currentMonth]}_${currentYear}.xlsx`);
+}
+
+// ============ EXPORTAR EXCEL - ANO COMPLETO ============
+function exportExcelAnual(){
+  const wb = XLSX.utils.book_new();
+  const header=['Categoria',...MONTHS_SHORT,'TOTAL ANO'];
+  const rows={entradas:[],fixas:[],variaveis:[],doacoes:[],gastos:[],saldo:[]};
+  MONTHS_SHORT.forEach((_,i)=>{
+    let d=loadData(currentYear,i);
+    d=autoCalcDoacoes(d);
+    const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
+    const tGastos=tF+tV+tD;
+    rows.entradas.push(tG);rows.fixas.push(tF);rows.variaveis.push(tV);
+    rows.doacoes.push(tD);rows.gastos.push(tGastos);rows.saldo.push(tG-tGastos);
+  });
+  const sumRow=arr=>arr.reduce((a,b)=>a+b,0);
+  const data=[
+    header,
+    ['💵 Total Entradas',...rows.entradas,sumRow(rows.entradas)],
+    ['🏠 Despesas Fixas',...rows.fixas,sumRow(rows.fixas)],
+    ['💳 Despesas Variáveis',...rows.variaveis,sumRow(rows.variaveis)],
+    ['🙏 Doações (10% auto)',...rows.doacoes,sumRow(rows.doacoes)],
+    ['📤 Total Gastos',...rows.gastos,sumRow(rows.gastos)],
+    ['🚀 Disponível p/ Investir',...rows.saldo,sumRow(rows.saldo)],
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:28},...Array(13).fill({wch:12})];
+  XLSX.utils.book_append_sheet(wb,ws,'Resumo Anual '+currentYear);
+
+  // Aba por mês
+  MONTHS.forEach((mes,i)=>{
+    let d=loadData(currentYear,i);
+    d=autoCalcDoacoes(d);
+    const tG=getTotal('ganhos',d);
+    if(tG===0 && getTotal('fixas',d)===0) return;
+    const linhas=[['Descrição','Dia','Valor','Categoria']];
+    ['ganhos','fixas','variaveis','doacoes'].forEach(sec=>{
+      (d[sec]||[]).forEach(r=>{
+        if(parseVal(r.val)>0) linhas.push([r.desc,r.dia,parseVal(r.val),sec]);
+      });
+    });
+    const ws2=XLSX.utils.aoa_to_sheet(linhas);
+    ws2['!cols']=[{wch:30},{wch:6},{wch:12},{wch:12}];
+    XLSX.utils.book_append_sheet(wb,ws2,mes.substring(0,10));
+  });
+
+  XLSX.writeFile(wb,`PradoGodoy_Anual_${currentYear}.xlsx`);
+}
+
+// ============ BACKUP JSON ============
+function exportBackup(){
+  const backup={exportDate:new Date().toISOString(),year:currentYear,data:{}};
+  for(let m=0;m<12;m++){
+    const key=dataKey(currentYear,m);
+    const raw=localStorage.getItem(key);
+    if(raw) backup.data[MONTHS[m]]=JSON.parse(raw);
+  }
+  // Include all years
+  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('pg_'));
+  const allData={};
+  allKeys.forEach(k=>{ try{ allData[k]=JSON.parse(localStorage.getItem(k)); }catch(e){} });
+  backup.allData=allData;
+  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`PradoGodoy_Backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+}
+
+// Init
+document.getElementById('yearInput').value=currentYear;
+document.getElementById('yearInput').addEventListener('change',function(){
+  currentYear=parseInt(this.value)||new Date().getFullYear();
   renderAll();
   updateAnual();
 });
-
 renderAll();
 </script>
 </body>
