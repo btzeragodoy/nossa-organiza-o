@@ -18,6 +18,7 @@
     --text: #212121; --text2: #555;
   }
   body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
   header {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
     color: white; padding: 18px 30px; display: flex; align-items: center; justify-content: space-between;
@@ -31,8 +32,9 @@
   .month-selector { display: flex; align-items: center; gap: 8px; }
   .month-selector input {
     background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3);
-    color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem; cursor: pointer;
+    color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.9rem;
   }
+
   .tabs { display: flex; background: #fff; border-bottom: 2px solid var(--border); padding: 0 30px; overflow-x: auto; }
   .tab {
     padding: 14px 24px; cursor: pointer; font-weight: 600; font-size: 0.88rem;
@@ -41,34 +43,81 @@
   }
   .tab:hover { color: var(--blue); }
   .tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  /* BARRA DE AÇÕES (export + import) */
+  .action-bar {
+    display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 30px;
+    background: white; border-bottom: 1px solid var(--border); align-items: center;
+  }
+  .action-label { font-size: 0.8rem; color: var(--text2); font-weight: 600; margin-right: 4px; }
+  .btn-export {
+    padding: 6px 14px; border-radius: 20px; border: none; cursor: pointer;
+    font-size: 0.8rem; font-weight: 600; transition: all 0.2s;
+  }
+  .btn-green  { background: #e8f5e9; color: var(--green); }
+  .btn-green:hover  { background: var(--green); color: white; }
+  .btn-blue   { background: #e3f2fd; color: var(--blue); }
+  .btn-blue:hover   { background: var(--blue); color: white; }
+  .btn-purple { background: #f3e5f5; color: var(--purple); }
+  .btn-purple:hover { background: var(--purple); color: white; }
+  .btn-orange { background: #fff3e0; color: #e65100; }
+  .btn-orange:hover { background: #e65100; color: white; }
+  /* BOTÃO IMPORTAR — destaque */
+  .btn-import {
+    padding: 6px 16px; border-radius: 20px; border: 2px solid var(--gold);
+    cursor: pointer; font-size: 0.8rem; font-weight: 700;
+    background: var(--gold-light); color: #e65100; transition: all 0.2s;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn-import:hover { background: var(--gold); color: white; }
+  .separator { width: 1px; height: 24px; background: var(--border); margin: 0 4px; }
+
   main { padding: 24px 30px; max-width: 1400px; margin: 0 auto; }
   .page { display: none; }
   .page.active { display: block; }
+
   .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-  .card { background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 5px solid; }
+  .card {
+    background: var(--card); border-radius: 14px; padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07); border-left: 5px solid;
+  }
   .card.green { border-color: var(--green-mid); }
-  .card.red { border-color: var(--red-mid); }
-  .card.blue { border-color: var(--blue); }
-  .card.gold { border-color: var(--gold); }
-  .card.purple { border-color: var(--purple); }
+  .card.red   { border-color: var(--red-mid); }
+  .card.blue  { border-color: var(--blue); }
+  .card.gold  { border-color: var(--gold); }
+  .card.purple{ border-color: var(--purple); }
   .card .label { font-size: 0.78rem; color: var(--text2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
   .card .value { font-size: 1.6rem; font-weight: 700; }
-  .card.green .value { color: var(--green); }
-  .card.red .value { color: var(--red); }
-  .card.blue .value { color: var(--blue); }
-  .card.gold .value { color: #e65100; }
+  .card.green  .value { color: var(--green); }
+  .card.red    .value { color: var(--red); }
+  .card.blue   .value { color: var(--blue); }
+  .card.gold   .value { color: #e65100; }
   .card.purple .value { color: var(--purple); }
   .card .sub { font-size: 0.75rem; color: var(--text2); margin-top: 4px; }
+
   .sections-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   @media(max-width: 900px) { .sections-grid { grid-template-columns: 1fr; } }
+
   .section-box { background: var(--card); border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
-  .section-header { padding: 14px 20px; display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; color: white; flex-wrap: wrap; }
-  .section-header.ganhos { background: var(--green); }
-  .section-header.fixas { background: var(--red); }
-  .section-header.variaveis { background: #e65100; }
-  .section-header.doacoes { background: var(--purple); }
+  .section-header {
+    padding: 14px 20px; display: flex; align-items: center; gap: 10px;
+    font-weight: 700; font-size: 0.95rem; color: white;
+  }
+  .section-header.ganhos   { background: var(--green); }
+  .section-header.fixas    { background: var(--red); }
+  .section-header.variaveis{ background: #e65100; }
+  .section-header.doacoes  { background: var(--purple); }
+  .auto-badge {
+    font-size: 0.68rem; background: rgba(255,255,255,0.25); border-radius: 10px;
+    padding: 2px 8px; margin-left: 4px; font-weight: 600;
+  }
+
   .section-table { width: 100%; border-collapse: collapse; }
-  .section-table thead th { background: #fafafa; padding: 9px 14px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2); border-bottom: 1px solid var(--border); text-align: left; }
+  .section-table thead th {
+    background: #fafafa; padding: 9px 14px; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.5px; color: var(--text2);
+    border-bottom: 1px solid var(--border); text-align: left;
+  }
   .section-table thead th:last-child { text-align: right; }
   .section-table tbody tr:hover { background: #fafafa; }
   .section-table td { padding: 9px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.88rem; }
@@ -80,14 +129,25 @@
   }
   .section-table td input:focus { background: #e3f2fd; }
   .section-table td input[type="number"] { text-align: right; }
-  .section-total td { background: #fafafa; font-weight: 700; font-size: 0.88rem; color: var(--text); border-top: 2px solid var(--border); }
+  .section-total td {
+    background: #fafafa; font-weight: 700; font-size: 0.88rem;
+    color: var(--text); border-top: 2px solid var(--border);
+  }
   .section-total td:last-child { font-size: 1rem; }
-  .total-green { color: var(--green) !important; }
-  .total-red { color: var(--red) !important; }
+  .total-green  { color: var(--green) !important; }
+  .total-red    { color: var(--red) !important; }
   .total-orange { color: #e65100 !important; }
   .total-purple { color: var(--purple) !important; }
-  .add-row-btn { display: block; width: 100%; padding: 8px; text-align: center; background: none; border: none; color: #aaa; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; border-top: 1px dashed #e0e0e0; }
+  .readonly-val { color: var(--purple); font-weight: 700; font-style: italic; font-size: 0.85rem; }
+  .auto-info { font-size: 0.75rem; color: var(--text2); padding: 8px 14px; background: #faf0ff; border-top: 1px solid #e1bee7; }
+
+  .add-row-btn {
+    display: block; width: 100%; padding: 8px; text-align: center;
+    background: none; border: none; color: #aaa; font-size: 0.82rem; cursor: pointer;
+    transition: all 0.2s; border-top: 1px dashed #e0e0e0;
+  }
   .add-row-btn:hover { background: #f5f5f5; color: var(--blue); }
+
   .saldo-box {
     background: linear-gradient(135deg, #1565c0, #0d47a1);
     border-radius: 14px; padding: 24px 30px; color: white; margin-top: 22px;
@@ -101,9 +161,13 @@
   .invest-highlight { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 12px 20px; }
   .invest-highlight .lbl { font-size: 0.78rem; opacity: 0.8; }
   .invest-highlight .val { font-size: 2rem; font-weight: 800; color: #69f0ae; }
+
   .anual-table-wrap { background: white; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
   .anual-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; }
-  .anual-table th { background: #1a1a2e; color: white; padding: 11px 14px; text-align: center; font-size: 0.8rem; position: sticky; top: 0; }
+  .anual-table th {
+    background: #1a1a2e; color: white; padding: 11px 14px; text-align: center; font-size: 0.8rem;
+    position: sticky; top: 0;
+  }
   .anual-table th:first-child { text-align: left; }
   .anual-table td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; text-align: center; }
   .anual-table td:first-child { text-align: left; font-weight: 600; }
@@ -112,25 +176,45 @@
   .anual-table tr.gasto-row td { background: #ffebee; font-weight: 700; color: var(--red); }
   .anual-table tr.invest-row td { background: #e3f2fd; font-weight: 700; color: var(--blue); font-size: 0.9rem; }
   .anual-summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+
   .nav-months { display: flex; gap: 6px; flex-wrap: wrap; padding: 14px 30px; background: white; border-bottom: 1px solid var(--border); }
-  .nav-month-btn { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.82rem; font-weight: 500; color: var(--text2); transition: all 0.2s; }
+  .nav-month-btn {
+    padding: 5px 13px; border-radius: 20px; border: 1px solid var(--border);
+    background: white; cursor: pointer; font-size: 0.82rem; font-weight: 500; color: var(--text2); transition: all 0.2s;
+  }
   .nav-month-btn:hover { border-color: var(--blue); color: var(--blue); }
   .nav-month-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
   .has-data { border-color: var(--green-mid); color: var(--green); }
+
   .section-person { font-size: 0.75rem; opacity: 0.85; font-weight: 400; margin-left: 6px; }
-  /* EXPORT TOOLBAR */
-  .export-toolbar { display: flex; gap: 10px; align-items: center; padding: 10px 30px; background: #fff; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
-  .export-toolbar span { font-size: 0.82rem; color: var(--text2); font-weight: 600; }
-  .export-btn { display: flex; align-items: center; gap: 6px; color: white; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.83rem; font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .export-btn:hover { filter: brightness(0.88); transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
-  .btn-green { background: #2e7d32; }
-  .btn-blue { background: #1565c0; }
-  .btn-purple { background: #6a1b9a; }
-  /* AUTO DOAÇÕES */
-  .auto-badge { font-size: 0.68rem; background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 12px; font-weight: 500; margin-left: 4px; }
-  .doacoes-auto-row td { background: #f3e5f5 !important; }
-  .doacoes-auto-row input { color: var(--purple) !important; font-weight: 700 !important; background: transparent !important; }
-  .doacoes-note { font-size: 0.72rem; color: var(--purple); padding: 6px 14px 8px; font-style: italic; background: #faf0ff; }
+
+  /* MODAL DE IMPORTAÇÃO */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 1000;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-box {
+    background: white; border-radius: 18px; padding: 32px;
+    max-width: 460px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    animation: popIn 0.2s ease;
+  }
+  @keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: var(--dark); }
+  .modal-desc { font-size: 0.85rem; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+  .modal-drop {
+    border: 2px dashed var(--gold); border-radius: 12px; padding: 30px;
+    text-align: center; cursor: pointer; transition: background 0.2s; margin-bottom: 16px;
+  }
+  .modal-drop:hover { background: var(--gold-light); }
+  .modal-drop .drop-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .modal-drop .drop-text { font-size: 0.85rem; color: var(--text2); }
+  .modal-drop .drop-text strong { color: var(--blue); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .modal-btn-cancel { padding: 8px 20px; border-radius: 8px; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 0.88rem; }
+  .modal-btn-cancel:hover { background: #f5f5f5; }
+  #importFileInput { display: none; }
 </style>
 </head>
 <body>
@@ -156,21 +240,24 @@
   <div class="tab" onclick="showTab('anual',event)">📊 Resumo Anual</div>
 </div>
 
-<div class="nav-months" id="navMonths"></div>
-
-<div class="export-toolbar">
-  <span>📥 Exportar:</span>
-  <button class="export-btn btn-green" onclick="exportExcelMes()">📊 Excel — Mês Atual</button>
-  <button class="export-btn btn-blue" onclick="exportExcelAnual()">📊 Excel — Ano Completo</button>
-  <button class="export-btn btn-purple" onclick="exportBackup()">💾 Backup Completo (JSON)</button>
+<!-- BARRA DE AÇÕES -->
+<div class="action-bar">
+  <span class="action-label">📥 Exportar:</span>
+  <button class="btn-export btn-green"  onclick="exportExcelMes()">📊 Excel — Mês Atual</button>
+  <button class="btn-export btn-blue"   onclick="exportExcelAno()">📊 Excel — Ano Completo</button>
+  <button class="btn-export btn-purple" onclick="backupJSON()">💾 Backup JSON</button>
+  <div class="separator"></div>
+  <button class="btn-import" onclick="openImportModal()">📂 Importar Backup JSON</button>
 </div>
+
+<div class="nav-months" id="navMonths"></div>
 
 <!-- PAGE MENSAL -->
 <div class="page active" id="page-mensal">
   <main>
     <div class="summary-cards" id="summaryCards"></div>
-    <div class="sections-grid">
 
+    <div class="sections-grid">
       <!-- GANHOS -->
       <div class="section-box">
         <div class="section-header ganhos">💵 Ganhos / Salários</div>
@@ -190,7 +277,7 @@
           <tbody></tbody>
           <tfoot><tr class="section-total"><td colspan="2">TOTAL DOAÇÕES</td><td class="total-purple" id="total-doacoes">R$ 0,00</td></tr></tfoot>
         </table>
-        <div class="doacoes-note">💡 Dízimo/Igreja e SOS Bichos calculados automaticamente: 5% das entradas cada (10% total)</div>
+        <div class="auto-info">💡 Dízimo/Igreja e SOS Bichos calculados automaticamente: 5% das entradas cada (10% total)</div>
         <button class="add-row-btn" onclick="addRow('doacoes')">+ Adicionar doação extra</button>
       </div>
 
@@ -219,13 +306,25 @@
 
     <!-- SALDO FINAL -->
     <div class="saldo-box">
-      <div class="item"><div class="lbl">💵 Total Entradas</div><div class="val" id="sb-entradas">R$ 0,00</div></div>
+      <div class="item">
+        <div class="lbl">💵 Total Entradas</div>
+        <div class="val" id="sb-entradas">R$ 0,00</div>
+      </div>
       <div class="divider"></div>
-      <div class="item"><div class="lbl">📤 Total Gastos</div><div class="val" id="sb-gastos">R$ 0,00</div></div>
+      <div class="item">
+        <div class="lbl">📤 Total Gastos</div>
+        <div class="val" id="sb-gastos">R$ 0,00</div>
+      </div>
       <div class="divider"></div>
-      <div class="item"><div class="lbl">🙏 Doações (10%)</div><div class="val" id="sb-doacoes">R$ 0,00</div></div>
+      <div class="item">
+        <div class="lbl">🙏 Doações (10%)</div>
+        <div class="val" id="sb-doacoes">R$ 0,00</div>
+      </div>
       <div class="divider"></div>
-      <div class="item"><div class="lbl">📊 % Comprometido</div><div class="val" id="sb-pct">0%</div></div>
+      <div class="item">
+        <div class="lbl">📊 % Comprometido</div>
+        <div class="val" id="sb-pct">0%</div>
+      </div>
       <div class="divider"></div>
       <div class="invest-highlight">
         <div class="lbl">🚀 Disponível para Investir</div>
@@ -241,208 +340,294 @@
   <main>
     <div class="anual-summary-cards" id="anualCards"></div>
     <div class="anual-table-wrap" style="overflow-x:auto">
-      <table class="anual-table" id="anualTable"><thead></thead><tbody></tbody></table>
+      <table class="anual-table" id="anualTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </main>
+</div>
+
+<!-- MODAL IMPORTAR -->
+<div class="modal-overlay" id="importModal">
+  <div class="modal-box">
+    <div class="modal-title">📂 Importar Backup JSON</div>
+    <div class="modal-desc">
+      Selecione um arquivo exportado anteriormente:<br><br>
+      📄 <strong>.json</strong> — Backup completo (todos os meses)<br>
+      📊 <strong>.xlsx</strong> — Excel de um mês específico<br><br>
+      ⚠️ <strong>Atenção:</strong> Para JSON, os dados atuais serão <strong>substituídos</strong>. Para XLSX, apenas o mês escolhido será restaurado.
+    </div>
+    <div class="modal-drop" onclick="document.getElementById('importFileInput').click()">
+      <div class="drop-icon">📄</div>
+      <div class="drop-text"><strong>Clique para selecionar</strong><br>ou arraste o arquivo <strong>.json</strong> ou <strong>.xlsx</strong> aqui</div>
+    </div>
+    <input type="file" id="importFileInput" accept=".json,.xlsx" onchange="handleImportFile(event)" />
+    <div class="modal-actions">
+      <button class="modal-btn-cancel" onclick="closeImportModal()">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <script>
 const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const MONTHS_SHORT = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
-// Índices das linhas de doações automáticas (Dízimo e SOS Bichos)
-const AUTO_DOACOES = ['Dízimo / Igreja', 'SOS Bichos'];
-
 const DEFAULT_ROWS = {
   ganhos:    [{desc:'Salário - Pessoa 1',dia:''},{desc:'Salário - Pessoa 2',dia:''}],
-  fixas:     [{desc:'Financiamento / Aluguel',dia:'3'},{desc:'Condomínio',dia:'10'},{desc:'Luz Apartamento',dia:'15'},{desc:'Internet / Claro',dia:'20'},{desc:'Plano de Saúde - P1',dia:'10'},{desc:'Plano de Saúde - P2',dia:'10'},{desc:'IPTU',dia:''},{desc:'DAS / MEI - P1',dia:''},{desc:'DAS / MEI - P2',dia:''},{desc:'Luz Sobrado',dia:''},{desc:'Gás',dia:''},{desc:'Tim / Celular - P1',dia:'10'},{desc:'Tim / Celular - P2',dia:'10'},{desc:'Cartão de Crédito',dia:'10'}],
-  variaveis: [{desc:'Cartão Mercado Pago - P1',dia:''},{desc:'Cartão Mercado Pago - P2',dia:''},{desc:'Santander / Banco',dia:''},{desc:'Cheque',dia:''},{desc:'Combustível',dia:''},{desc:'Lazer / Saídas',dia:''},{desc:'Outros',dia:''}],
-  doacoes:   [{desc:'Dízimo / Igreja',dia:'',val:'',auto:true},{desc:'SOS Bichos',dia:'',val:'',auto:true}]
+  fixas:     [{desc:'Financiamento / Aluguel',dia:'3'},{desc:'Condomínio',dia:'10'},{desc:'Luz Apartamento',dia:'15'},
+              {desc:'Internet / Claro',dia:'20'},{desc:'Plano de Saúde - P1',dia:'10'},{desc:'Plano de Saúde - P2',dia:'10'},
+              {desc:'IPTU',dia:''},{desc:'DAS / MEI - P1',dia:''},{desc:'DAS / MEI - P2',dia:''},
+              {desc:'Luz Sobrado',dia:''},{desc:'Gás',dia:''},{desc:'Tim / Celular - P1',dia:'10'},
+              {desc:'Tim / Celular - P2',dia:'10'},{desc:'Cartão de Crédito',dia:'10'}],
+  variaveis: [{desc:'Cartão Mercado Pago - P1',dia:''},{desc:'Cartão Mercado Pago - P2',dia:''},
+              {desc:'Santander / Banco',dia:''},{desc:'Cheque',dia:''},
+              {desc:'Combustível',dia:''},{desc:'Lazer / Saídas',dia:''},{desc:'Outros',dia:''}],
+  doacoes:   []
 };
 
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 
-function dataKey(y,m){ return `pg_${y}_${m}`; }
+function dataKey(y, m) { return `pg_${y}_${m}`; }
 
-function loadData(y,m){
-  const raw = localStorage.getItem(dataKey(y,m));
-  if(raw) return JSON.parse(raw);
-  const d={};
-  for(const sec in DEFAULT_ROWS){
-    d[sec]=DEFAULT_ROWS[sec].map(r=>({desc:r.desc,dia:r.dia,val:'',auto:r.auto||false}));
+function loadData(y, m) {
+  const raw = localStorage.getItem(dataKey(y, m));
+  if (raw) return JSON.parse(raw);
+  const d = {};
+  for (const sec in DEFAULT_ROWS) {
+    d[sec] = DEFAULT_ROWS[sec].map(r => ({desc: r.desc, dia: r.dia, val: ''}));
   }
+  d.doacoes = [];
   return d;
 }
 
-function saveData(y,m,d){
-  localStorage.setItem(dataKey(y,m),JSON.stringify(d));
+function saveData(y, m, d) {
+  localStorage.setItem(dataKey(y, m), JSON.stringify(d));
   updateNavMonths();
   updateAnual();
 }
 
-function fmt(v){ return 'R$ '+parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function fmtNum(v){ return parseFloat(v||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function parseVal(s){ if(!s) return 0; return parseFloat(String(s).replace(/[^\d,\.]/g,'').replace(',','.')) || 0; }
-function getTotal(sec,d){ return (d[sec]||[]).reduce((a,r)=>a+parseVal(r.val),0); }
-
-function autoCalcDoacoes(d){
-  const tG = getTotal('ganhos',d);
-  const pct5 = tG * 0.05;
-  (d.doacoes||[]).forEach(r=>{
-    if(r.auto) r.val = pct5.toFixed(2);
-  });
-  return d;
+function fmt(v) {
+  return 'R$ ' + parseFloat(v||0).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
-function renderSection(sec, d){
+function parseVal(s) {
+  if (!s) return 0;
+  return parseFloat(String(s).replace(/[^\d,.]/g,'').replace(',','.')) || 0;
+}
+
+function getTotal(sec, d) {
+  return (d[sec] || []).reduce((a, r) => a + parseVal(r.val), 0);
+}
+
+function calcDizimo(totalGanhos) { return totalGanhos * 0.05; }
+function calcSosBichos(totalGanhos) { return totalGanhos * 0.05; }
+
+function renderSection(sec, d) {
   const tbody = document.querySelector(`#tbl-${sec} tbody`);
-  tbody.innerHTML='';
-  (d[sec]||[]).forEach((row,i)=>{
-    const tr = document.createElement('tr');
-    const isAuto = row.auto === true;
-    if(isAuto) tr.classList.add('doacoes-auto-row');
-    const autoMark = isAuto ? ' <span style="font-size:0.68rem;color:#6a1b9a;font-weight:600">⚡ auto</span>' : '';
-    const delBtn = isAuto ? '' : `<span style="cursor:pointer;color:#ccc;margin-left:4px;font-size:0.75rem" onclick="removeRow('${sec}',${i})">✕</span>`;
-    tr.innerHTML = `
-      <td>
-        <input type="text" value="${row.desc||''}" placeholder="Descrição" ${isAuto?'readonly style="font-weight:700;color:#6a1b9a"':''} onchange="updateRow('${sec}',${i},'desc',this.value)">
-        ${autoMark}${delBtn}
-      </td>
-      <td><input type="text" value="${row.dia||''}" placeholder="Dia" style="text-align:center" onchange="updateRow('${sec}',${i},'dia',this.value)"></td>
-      <td><input type="number" value="${row.val||''}" placeholder="0,00" min="0" step="0.01" ${isAuto?'readonly':''}
-        onchange="updateRow('${sec}',${i},'val',this.value)" oninput="updateRow('${sec}',${i},'val',this.value)"></td>
-    `;
-    tbody.appendChild(tr);
-  });
+  tbody.innerHTML = '';
+  const tG = getTotal('ganhos', d);
+
+  if (sec === 'doacoes') {
+    // Linhas automáticas (Dízimo e SOS Bichos)
+    const autoItems = [
+      { label: 'Dízimo / Igreja', val: calcDizimo(tG) },
+      { label: 'SOS Bichos',      val: calcSosBichos(tG) }
+    ];
+    autoItems.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.style.background = '#faf0ff';
+      tr.innerHTML = `
+        <td><span style="color:var(--purple);font-weight:600">🔒 ${item.label}</span> <span style="font-size:0.7rem;color:#aaa">(auto)</span></td>
+        <td style="text-align:center">—</td>
+        <td><span class="readonly-val">${fmt(item.val)}</span></td>
+      `;
+      tbody.appendChild(tr);
+    });
+    // Linhas manuais extras
+    (d.doacoes || []).forEach((row, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" value="${row.desc||''}" placeholder="Descrição" onchange="updateRow('doacoes',${i},'desc',this.value)">
+            <span style="cursor:pointer;color:#ccc;margin-left:4px;font-size:0.75rem" onclick="removeRow('doacoes',${i})">✕</span></td>
+        <td><input type="text" value="${row.dia||''}" placeholder="Dia" style="text-align:center" onchange="updateRow('doacoes',${i},'dia',this.value)"></td>
+        <td><input type="number" value="${row.val||''}" placeholder="0,00" min="0" step="0.01" oninput="updateRow('doacoes',${i},'val',this.value)"></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } else {
+    (d[sec] || []).forEach((row, i) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><input type="text" value="${row.desc||''}" placeholder="Descrição" onchange="updateRow('${sec}',${i},'desc',this.value)">
+            <span style="cursor:pointer;color:#ccc;margin-left:4px;font-size:0.75rem" onclick="removeRow('${sec}',${i})">✕</span></td>
+        <td><input type="text" value="${row.dia||''}" placeholder="Dia" style="text-align:center" onchange="updateRow('${sec}',${i},'dia',this.value)"></td>
+        <td><input type="number" value="${row.val||''}" placeholder="0,00" min="0" step="0.01" oninput="updateRow('${sec}',${i},'val',this.value)"></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
   updateTotals();
 }
 
-function updateRow(sec,i,field,val){
-  const d = loadData(currentYear,currentMonth);
-  if(d[sec][i].auto && field==='val') return; // protect auto rows
-  d[sec][i][field]=val;
-  saveData(currentYear,currentMonth,d);
+function updateRow(sec, i, field, val) {
+  const d = loadData(currentYear, currentMonth);
+  d[sec][i][field] = val;
+  saveData(currentYear, currentMonth, d);
   updateTotals();
 }
 
-function addRow(sec){
-  const d = loadData(currentYear,currentMonth);
-  d[sec].push({desc:'',dia:'',val:'',auto:false});
-  saveData(currentYear,currentMonth,d);
-  renderSection(sec,d);
+function addRow(sec) {
+  const d = loadData(currentYear, currentMonth);
+  if (!d[sec]) d[sec] = [];
+  d[sec].push({desc:'', dia:'', val:''});
+  saveData(currentYear, currentMonth, d);
+  renderSection(sec, d);
 }
 
-function removeRow(sec,i){
-  const d = loadData(currentYear,currentMonth);
-  if(d[sec][i].auto) return;
-  d[sec].splice(i,1);
-  saveData(currentYear,currentMonth,d);
-  renderSection(sec,d);
+function removeRow(sec, i) {
+  const d = loadData(currentYear, currentMonth);
+  d[sec].splice(i, 1);
+  saveData(currentYear, currentMonth, d);
+  renderSection(sec, d);
 }
 
-function updateTotals(){
-  let d = loadData(currentYear,currentMonth);
-  d = autoCalcDoacoes(d);
-  saveData(currentYear,currentMonth,d);
+function updateTotals() {
+  const d = loadData(currentYear, currentMonth);
+  const tG = getTotal('ganhos', d);
+  const tF = getTotal('fixas', d);
+  const tV = getTotal('variaveis', d);
+  const tDExtra = getTotal('doacoes', d);
+  const tDauto = calcDizimo(tG) + calcSosBichos(tG);
+  const tD = tDauto + tDExtra;
+  const tGastos = tF + tV + tD;
+  const saldo = tG - tGastos;
+  const pct = tG > 0 ? (tGastos/tG*100) : 0;
 
-  const tG = getTotal('ganhos',d);
-  const tF = getTotal('fixas',d);
-  const tV = getTotal('variaveis',d);
-  const tD = getTotal('doacoes',d);
-  const tGastos = tF+tV+tD;
-  const saldo = tG-tGastos;
-  const pct = tG>0?(tGastos/tG*100):0;
+  document.getElementById('total-ganhos').textContent   = fmt(tG);
+  document.getElementById('total-fixas').textContent    = fmt(tF);
+  document.getElementById('total-variaveis').textContent= fmt(tV);
+  document.getElementById('total-doacoes').textContent  = fmt(tD);
+  document.getElementById('sb-entradas').textContent    = fmt(tG);
+  document.getElementById('sb-gastos').textContent      = fmt(tGastos);
+  document.getElementById('sb-doacoes').textContent     = fmt(tD);
+  document.getElementById('sb-pct').textContent         = pct.toFixed(1) + '%';
+  document.getElementById('sb-invest').textContent      = fmt(Math.max(0, saldo));
+  document.getElementById('sb-saldo-label').textContent = saldo < 0 ? '⚠️ Déficit no mês!' : 'Disponível / Investimento';
+  document.getElementById('sb-invest').style.color      = saldo >= 0 ? '#69f0ae' : '#ff8a80';
 
-  document.getElementById('total-ganhos').textContent=fmt(tG);
-  document.getElementById('total-fixas').textContent=fmt(tF);
-  document.getElementById('total-variaveis').textContent=fmt(tV);
-  document.getElementById('total-doacoes').textContent=fmt(tD);
-  document.getElementById('sb-entradas').textContent=fmt(tG);
-  document.getElementById('sb-gastos').textContent=fmt(tGastos);
-  document.getElementById('sb-doacoes').textContent=fmt(tD);
-  document.getElementById('sb-pct').textContent=pct.toFixed(1)+'%';
-  document.getElementById('sb-invest').textContent=fmt(Math.max(0,saldo));
-  document.getElementById('sb-saldo-label').textContent=saldo<0?'⚠️ Déficit no mês!':'Disponível / Investimento';
-  document.getElementById('sb-invest').style.color=saldo>=0?'#69f0ae':'#ff8a80';
-
-  renderSummaryCards(tG,tGastos,tD,saldo,pct);
+  renderSummaryCards(tG, tGastos, tD, saldo, pct);
 }
 
-function renderSummaryCards(tG,tGastos,tD,saldo,pct){
-  document.getElementById('summaryCards').innerHTML=`
-    <div class="card green"><div class="label">💵 Total de Entradas</div><div class="value">${fmt(tG)}</div><div class="sub">Soma dos salários</div></div>
-    <div class="card red"><div class="label">📤 Total de Gastos</div><div class="value">${fmt(tGastos)}</div><div class="sub">Fixas + Variáveis + Doações</div></div>
-    <div class="card purple"><div class="label">🙏 Doações (10%)</div><div class="value">${fmt(tD)}</div><div class="sub">5% Dízimo + 5% SOS Bichos</div></div>
-    <div class="card blue"><div class="label">📊 Comprometido</div><div class="value">${pct.toFixed(1)}%</div><div class="sub">Da renda total</div></div>
-    <div class="card gold"><div class="label">🚀 Para Investir</div><div class="value" style="color:${saldo>=0?'#2e7d32':'#c62828'}">${fmt(Math.max(0,saldo))}</div><div class="sub">${saldo<0?'⚠️ Déficit: '+fmt(Math.abs(saldo)):'Saldo livre'}</div></div>
+function renderSummaryCards(tG, tGastos, tD, saldo, pct) {
+  document.getElementById('summaryCards').innerHTML = `
+    <div class="card green">
+      <div class="label">💵 Total de Entradas</div>
+      <div class="value">${fmt(tG)}</div>
+      <div class="sub">Soma dos salários</div>
+    </div>
+    <div class="card red">
+      <div class="label">📤 Total de Gastos</div>
+      <div class="value">${fmt(tGastos)}</div>
+      <div class="sub">Fixas + Variáveis + Doações</div>
+    </div>
+    <div class="card purple">
+      <div class="label">🙏 Total Doações</div>
+      <div class="value">${fmt(tD)}</div>
+      <div class="sub">10% da renda (auto)</div>
+    </div>
+    <div class="card blue">
+      <div class="label">📊 Comprometido</div>
+      <div class="value">${pct.toFixed(1)}%</div>
+      <div class="sub">Da renda total</div>
+    </div>
+    <div class="card gold">
+      <div class="label">🚀 Para Investir</div>
+      <div class="value" style="color:${saldo>=0?'#2e7d32':'#c62828'}">${fmt(Math.max(0,saldo))}</div>
+      <div class="sub">${saldo < 0 ? '⚠️ Déficit: '+fmt(Math.abs(saldo)) : 'Saldo livre'}</div>
+    </div>
   `;
 }
 
-function renderAll(){
-  let d = loadData(currentYear,currentMonth);
-  d = autoCalcDoacoes(d);
-  renderSection('ganhos',d);
-  renderSection('fixas',d);
-  renderSection('variaveis',d);
-  renderSection('doacoes',d);
+function renderAll() {
+  const d = loadData(currentYear, currentMonth);
+  renderSection('ganhos', d);
+  renderSection('fixas', d);
+  renderSection('variaveis', d);
+  renderSection('doacoes', d);
   updateTotals();
   updateNavMonths();
 }
 
-function updateNavMonths(){
+function updateNavMonths() {
   const nav = document.getElementById('navMonths');
-  nav.innerHTML='';
-  MONTHS.forEach((m,i)=>{
-    const btn=document.createElement('button');
-    btn.className='nav-month-btn'+(i===currentMonth?' active':'');
-    const hasData=localStorage.getItem(dataKey(currentYear,i));
-    if(hasData&&i!==currentMonth) btn.classList.add('has-data');
-    btn.textContent=m;
-    btn.onclick=()=>{currentMonth=i;renderAll();updateNavMonths();};
+  nav.innerHTML = '';
+  MONTHS.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-month-btn' + (i === currentMonth ? ' active' : '');
+    const hasData = localStorage.getItem(dataKey(currentYear, i));
+    if (hasData && i !== currentMonth) btn.classList.add('has-data');
+    btn.textContent = m;
+    btn.onclick = () => { currentMonth = i; renderAll(); };
     nav.appendChild(btn);
   });
 }
 
-function showTab(tab,event){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('page-'+tab).classList.add('active');
-  if(tab==='anual') updateAnual();
+function showTab(tab, event) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  if(event) event.target.classList.add('active');
+  document.getElementById('page-' + tab).classList.add('active');
+  if (tab === 'anual') updateAnual();
 }
 
-function updateAnual(){
-  const tbody=document.querySelector('#anualTable tbody');
-  const thead=document.querySelector('#anualTable thead');
-  const rows={entradas:[],fixas:[],variaveis:[],doacoes:[],gastos:[],saldo:[]};
-  MONTHS_SHORT.forEach((m,i)=>{
-    let d=loadData(currentYear,i);
-    d=autoCalcDoacoes(d);
-    const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
-    const tGastos=tF+tV+tD;
-    rows.entradas.push(tG);rows.fixas.push(tF);rows.variaveis.push(tV);
-    rows.doacoes.push(tD);rows.gastos.push(tGastos);rows.saldo.push(tG-tGastos);
+function updateAnual() {
+  const tbody = document.querySelector('#anualTable tbody');
+  const thead = document.querySelector('#anualTable thead');
+  const rows = { entradas:[], fixas:[], variaveis:[], doacoes:[], gastos:[], saldo:[] };
+
+  MONTHS_SHORT.forEach((m, i) => {
+    const d = loadData(currentYear, i);
+    const tG = getTotal('ganhos', d);
+    const tF = getTotal('fixas', d);
+    const tV = getTotal('variaveis', d);
+    const tDExtra = getTotal('doacoes', d);
+    const tD = calcDizimo(tG) + calcSosBichos(tG) + tDExtra;
+    const tGastos = tF + tV + tD;
+    rows.entradas.push(tG); rows.fixas.push(tF); rows.variaveis.push(tV);
+    rows.doacoes.push(tD); rows.gastos.push(tGastos); rows.saldo.push(tG - tGastos);
   });
-  const sumRow=arr=>arr.reduce((a,b)=>a+b,0);
-  thead.innerHTML=`<tr><th>Categoria</th>${MONTHS_SHORT.map(m=>`<th>${m}</th>`).join('')}<th>TOTAL ANO</th></tr>`;
-  const tableRows=[
-    {label:'💵 Total Entradas',key:'entradas',cls:'total-row'},
-    {label:'🏠 Despesas Fixas',key:'fixas',cls:''},
-    {label:'💳 Despesas Variáveis',key:'variaveis',cls:''},
-    {label:'🙏 Doações (10% auto)',key:'doacoes',cls:''},
-    {label:'📤 Total Gastos',key:'gastos',cls:'gasto-row'},
-    {label:'🚀 Disponível p/ Investir',key:'saldo',cls:'invest-row'},
+
+  const sumRow = arr => arr.reduce((a,b) => a+b, 0);
+  const fmtS   = v => parseFloat(v).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+  thead.innerHTML = `<tr>
+    <th>Categoria</th>
+    ${MONTHS_SHORT.map(m=>`<th>${m}</th>`).join('')}
+    <th>TOTAL ANO</th>
+  </tr>`;
+
+  const tableRows = [
+    {label:'💵 Total Entradas',        key:'entradas',  cls:'total-row'},
+    {label:'🏠 Despesas Fixas',        key:'fixas',     cls:''},
+    {label:'💳 Despesas Variáveis',    key:'variaveis', cls:''},
+    {label:'🙏 Doações',               key:'doacoes',   cls:''},
+    {label:'📤 Total Gastos',          key:'gastos',    cls:'gasto-row'},
+    {label:'🚀 Disponível p/ Investir',key:'saldo',     cls:'invest-row'},
   ];
-  tbody.innerHTML=tableRows.map(row=>`
+
+  tbody.innerHTML = tableRows.map(row=>`
     <tr class="${row.cls}">
       <td>${row.label}</td>
-      ${rows[row.key].map(v=>`<td>R$ ${fmtNum(v)}</td>`).join('')}
-      <td><strong>R$ ${fmtNum(sumRow(rows[row.key]))}</strong></td>
-    </tr>`).join('');
-  const totalE=sumRow(rows.entradas),totalG=sumRow(rows.gastos),totalS=sumRow(rows.saldo);
-  const bestMonth=rows.saldo.indexOf(Math.max(...rows.saldo));
-  document.getElementById('anualCards').innerHTML=`
+      ${rows[row.key].map(v=>`<td>R$ ${fmtS(v)}</td>`).join('')}
+      <td><strong>R$ ${fmtS(sumRow(rows[row.key]))}</strong></td>
+    </tr>
+  `).join('');
+
+  const totalE = sumRow(rows.entradas), totalG = sumRow(rows.gastos), totalS = sumRow(rows.saldo);
+  const bestMonth = rows.saldo.indexOf(Math.max(...rows.saldo));
+  document.getElementById('anualCards').innerHTML = `
     <div class="card green"><div class="label">💵 Entradas no Ano</div><div class="value">${fmt(totalE)}</div><div class="sub">Soma dos 12 meses</div></div>
     <div class="card red"><div class="label">📤 Gastos no Ano</div><div class="value">${fmt(totalG)}</div><div class="sub">Todos os gastos</div></div>
     <div class="card gold"><div class="label">🚀 Investido/Acumulado</div><div class="value" style="color:${totalS>=0?'#2e7d32':'#c62828'}">${fmt(totalS)}</div><div class="sub">Saldo total do ano</div></div>
@@ -450,120 +635,252 @@ function updateAnual(){
   `;
 }
 
-// ============ EXPORTAR EXCEL - MÊS ATUAL ============
-function exportExcelMes(){
-  let d = loadData(currentYear,currentMonth);
-  d = autoCalcDoacoes(d);
+/* ========= EXPORTAR EXCEL ========= */
+function exportExcelMes() {
+  const d = loadData(currentYear, currentMonth);
+  const tG = getTotal('ganhos', d);
   const wb = XLSX.utils.book_new();
-  const mesNome = MONTHS[currentMonth]+' '+currentYear;
-
-  const addSheet = (sec, titulo) => {
-    const rows = [[titulo,'Dia','Valor (R$)']];
-    (d[sec]||[]).forEach(r=>rows.push([r.desc||'',r.dia||'',parseVal(r.val)||0]));
-    rows.push(['']);
-    rows.push(['TOTAL','',getTotal(sec,d)]);
-    const ws = XLSX.utils.aoa_to_sheet(rows);
-    ws['!cols']=[{wch:35},{wch:8},{wch:14}];
-    XLSX.utils.book_append_sheet(wb,ws,titulo.substring(0,31));
+  const makeSheet = (title, rows) => {
+    const ws = XLSX.utils.aoa_to_sheet([[title], ['Descrição','Dia/Data','Valor (R$)'],
+      ...rows.map(r=>[r.desc, r.dia, parseVal(r.val)])
+    ]);
+    return ws;
   };
-
-  addSheet('ganhos','Ganhos');
-  addSheet('fixas','Despesas Fixas');
-  addSheet('variaveis','Despesas Variáveis');
-  addSheet('doacoes','Doações');
-
-  // Resumo
-  const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
-  const tGastos=tF+tV+tD,saldo=tG-tGastos;
-  const resumo=[
-    ['RESUMO - '+mesNome,''],['',''],
-    ['Total Entradas',tG],['Total Fixas',tF],['Total Variáveis',tV],
-    ['Total Doações (10% auto)',tD],['',''],
-    ['TOTAL GASTOS',tGastos],['% Comprometido',tG>0?(tGastos/tG*100).toFixed(1)+'%':'0%'],
-    ['DISPONÍVEL PARA INVESTIR',saldo],
-    ['',''],['Dízimo / Igreja (5%)',tG*0.05],['SOS Bichos (5%)',tG*0.05],
+  XLSX.utils.book_append_sheet(wb, makeSheet('Ganhos', d.ganhos), 'Ganhos');
+  XLSX.utils.book_append_sheet(wb, makeSheet('Fixas', d.fixas), 'Fixas');
+  XLSX.utils.book_append_sheet(wb, makeSheet('Variáveis', d.variaveis), 'Variáveis');
+  const doacoesRows = [
+    {desc:'Dízimo / Igreja (5% auto)', dia:'—', val: calcDizimo(tG)},
+    {desc:'SOS Bichos (5% auto)',       dia:'—', val: calcSosBichos(tG)},
+    ...(d.doacoes||[])
   ];
-  const wsR=XLSX.utils.aoa_to_sheet(resumo);
-  wsR['!cols']=[{wch:30},{wch:16}];
-  XLSX.utils.book_append_sheet(wb,wsR,'Resumo');
-
-  XLSX.writeFile(wb,`PradoGodoy_${MONTHS[currentMonth]}_${currentYear}.xlsx`);
+  XLSX.utils.book_append_sheet(wb, makeSheet('Doações', doacoesRows), 'Doações');
+  XLSX.writeFile(wb, `PradoGodoy_${MONTHS[currentMonth]}_${currentYear}.xlsx`);
 }
 
-// ============ EXPORTAR EXCEL - ANO COMPLETO ============
-function exportExcelAnual(){
+function exportExcelAno() {
   const wb = XLSX.utils.book_new();
-  const header=['Categoria',...MONTHS_SHORT,'TOTAL ANO'];
-  const rows={entradas:[],fixas:[],variaveis:[],doacoes:[],gastos:[],saldo:[]};
-  MONTHS_SHORT.forEach((_,i)=>{
-    let d=loadData(currentYear,i);
-    d=autoCalcDoacoes(d);
-    const tG=getTotal('ganhos',d),tF=getTotal('fixas',d),tV=getTotal('variaveis',d),tD=getTotal('doacoes',d);
-    const tGastos=tF+tV+tD;
-    rows.entradas.push(tG);rows.fixas.push(tF);rows.variaveis.push(tV);
-    rows.doacoes.push(tD);rows.gastos.push(tGastos);rows.saldo.push(tG-tGastos);
+  const header = ['Categoria', ...MONTHS_SHORT, 'TOTAL ANO'];
+  const rows = { entradas:[], fixas:[], variaveis:[], doacoes:[], gastos:[], saldo:[] };
+  MONTHS_SHORT.forEach((m,i) => {
+    const d = loadData(currentYear, i);
+    const tG = getTotal('ganhos', d);
+    const tF = getTotal('fixas', d);
+    const tV = getTotal('variaveis', d);
+    const tD = calcDizimo(tG)+calcSosBichos(tG)+getTotal('doacoes',d);
+    const tGastos = tF+tV+tD;
+    rows.entradas.push(tG); rows.fixas.push(tF); rows.variaveis.push(tV);
+    rows.doacoes.push(tD); rows.gastos.push(tGastos); rows.saldo.push(tG-tGastos);
   });
-  const sumRow=arr=>arr.reduce((a,b)=>a+b,0);
-  const data=[
+  const sum = arr => arr.reduce((a,b)=>a+b,0);
+  const data = [
     header,
-    ['💵 Total Entradas',...rows.entradas,sumRow(rows.entradas)],
-    ['🏠 Despesas Fixas',...rows.fixas,sumRow(rows.fixas)],
-    ['💳 Despesas Variáveis',...rows.variaveis,sumRow(rows.variaveis)],
-    ['🙏 Doações (10% auto)',...rows.doacoes,sumRow(rows.doacoes)],
-    ['📤 Total Gastos',...rows.gastos,sumRow(rows.gastos)],
-    ['🚀 Disponível p/ Investir',...rows.saldo,sumRow(rows.saldo)],
+    ['💵 Entradas', ...rows.entradas, sum(rows.entradas)],
+    ['🏠 Fixas',    ...rows.fixas,    sum(rows.fixas)],
+    ['💳 Variáveis',...rows.variaveis,sum(rows.variaveis)],
+    ['🙏 Doações',  ...rows.doacoes,  sum(rows.doacoes)],
+    ['📤 Gastos',   ...rows.gastos,   sum(rows.gastos)],
+    ['🚀 Saldo',    ...rows.saldo,    sum(rows.saldo)],
   ];
-  const ws=XLSX.utils.aoa_to_sheet(data);
-  ws['!cols']=[{wch:28},...Array(13).fill({wch:12})];
-  XLSX.utils.book_append_sheet(wb,ws,'Resumo Anual '+currentYear);
-
-  // Aba por mês
-  MONTHS.forEach((mes,i)=>{
-    let d=loadData(currentYear,i);
-    d=autoCalcDoacoes(d);
-    const tG=getTotal('ganhos',d);
-    if(tG===0 && getTotal('fixas',d)===0) return;
-    const linhas=[['Descrição','Dia','Valor','Categoria']];
-    ['ganhos','fixas','variaveis','doacoes'].forEach(sec=>{
-      (d[sec]||[]).forEach(r=>{
-        if(parseVal(r.val)>0) linhas.push([r.desc,r.dia,parseVal(r.val),sec]);
-      });
-    });
-    const ws2=XLSX.utils.aoa_to_sheet(linhas);
-    ws2['!cols']=[{wch:30},{wch:6},{wch:12},{wch:12}];
-    XLSX.utils.book_append_sheet(wb,ws2,mes.substring(0,10));
-  });
-
-  XLSX.writeFile(wb,`PradoGodoy_Anual_${currentYear}.xlsx`);
+  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(data), `Anual ${currentYear}`);
+  XLSX.writeFile(wb, `PradoGodoy_Anual_${currentYear}.xlsx`);
 }
 
-// ============ BACKUP JSON ============
-function exportBackup(){
-  const backup={exportDate:new Date().toISOString(),year:currentYear,data:{}};
-  for(let m=0;m<12;m++){
-    const key=dataKey(currentYear,m);
-    const raw=localStorage.getItem(key);
-    if(raw) backup.data[MONTHS[m]]=JSON.parse(raw);
+/* ========= BACKUP JSON ========= */
+function backupJSON() {
+  const backup = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k.startsWith('pg_')) backup[k] = JSON.parse(localStorage.getItem(k));
   }
-  // Include all years
-  const allKeys=Object.keys(localStorage).filter(k=>k.startsWith('pg_'));
-  const allData={};
-  allKeys.forEach(k=>{ try{ allData[k]=JSON.parse(localStorage.getItem(k)); }catch(e){} });
-  backup.allData=allData;
-  const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download=`PradoGodoy_Backup_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
+  backup._exportedAt = new Date().toISOString();
+  backup._version = 1;
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `PradoGodoy_Backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click(); URL.revokeObjectURL(url);
 }
 
-// Init
-document.getElementById('yearInput').value=currentYear;
-document.getElementById('yearInput').addEventListener('change',function(){
-  currentYear=parseInt(this.value)||new Date().getFullYear();
+/* ========= IMPORTAR JSON ========= */
+function openImportModal() {
+  document.getElementById('importModal').classList.add('open');
+}
+
+function closeImportModal() {
+  document.getElementById('importModal').classList.remove('open');
+  document.getElementById('importFileInput').value = '';
+}
+
+function handleImportFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'json') {
+    importJSON(file);
+  } else if (ext === 'xlsx' || ext === 'xls') {
+    importXLSX(file);
+  } else {
+    alert('❌ Formato não suportado. Use .json ou .xlsx');
+  }
+}
+
+function importJSON(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const backup = JSON.parse(e.target.result);
+      const keys = Object.keys(backup).filter(k => k.startsWith('pg_'));
+      if (keys.length === 0) {
+        alert('❌ Arquivo inválido! Este não parece ser um backup do Prado & Godoy.');
+        return;
+      }
+      const count = keys.length;
+      const exportedAt = backup._exportedAt ? new Date(backup._exportedAt).toLocaleString('pt-BR') : 'desconhecido';
+      const ok = confirm(
+        `✅ Backup JSON encontrado!\n\n` +
+        `📅 Exportado em: ${exportedAt}\n` +
+        `📦 ${count} mês(es) com dados\n\n` +
+        `Deseja importar e SUBSTITUIR os dados atuais deste navegador?`
+      );
+      if (!ok) { closeImportModal(); return; }
+      const toRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        if (localStorage.key(i).startsWith('pg_')) toRemove.push(localStorage.key(i));
+      }
+      toRemove.forEach(k => localStorage.removeItem(k));
+      keys.forEach(k => localStorage.setItem(k, JSON.stringify(backup[k])));
+      closeImportModal();
+      renderAll();
+      alert(`🎉 Importação JSON concluída!\n${count} mês(es) restaurado(s) com sucesso!`);
+    } catch(err) {
+      alert('❌ Erro ao ler o arquivo. Verifique se é um JSON válido.');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function importXLSX(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = new Uint8Array(e.target.result);
+      const wb = XLSX.read(data, {type: 'array'});
+
+      // Detecta mês/ano pelo nome do arquivo (ex: PradoGodoy_Janeiro_2025.xlsx)
+      let detectedMonth = -1;
+      let detectedYear = currentYear;
+      const nameParts = file.name.replace('.xlsx','').split('_');
+      MONTHS.forEach((m, i) => { if (nameParts.includes(m)) detectedMonth = i; });
+      nameParts.forEach(p => { if (/^20\d{2}$/.test(p)) detectedYear = parseInt(p); });
+
+      // Monta seletor de mês/ano para o usuário confirmar
+      const monthOptions = MONTHS.map((m,i) =>
+        `<option value="${i}" ${i===detectedMonth?'selected':''}>${m}</option>`
+      ).join('');
+      const yearOptions = [2024,2025,2026,2027,2028].map(y =>
+        `<option value="${y}" ${y===detectedYear?'selected':''}>${y}</option>`
+      ).join('');
+
+      // Cria modal de confirmação inline
+      const confirmDiv = document.createElement('div');
+      confirmDiv.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:2000;display:flex;align-items:center;justify-content:center';
+      confirmDiv.innerHTML = `
+        <div style="background:white;border-radius:16px;padding:28px;max-width:400px;width:90%;box-shadow:0 8px 40px rgba(0,0,0,0.2)">
+          <div style="font-size:1.1rem;font-weight:700;margin-bottom:12px">📊 Importar XLSX</div>
+          <div style="font-size:0.85rem;color:#555;margin-bottom:18px">
+            Arquivo: <strong>${file.name}</strong><br>
+            Abas detectadas: <strong>${wb.SheetNames.join(', ')}</strong><br><br>
+            Selecione o mês e ano para onde importar os dados:
+          </div>
+          <div style="display:flex;gap:10px;margin-bottom:20px">
+            <select id="xlsxMonth" style="flex:1;padding:8px;border-radius:8px;border:1px solid #ddd;font-size:0.88rem">${monthOptions}</select>
+            <select id="xlsxYear" style="width:90px;padding:8px;border-radius:8px;border:1px solid #ddd;font-size:0.88rem">${yearOptions}</select>
+          </div>
+          <div style="display:flex;gap:10px;justify-content:flex-end">
+            <button id="xlsxCancel" style="padding:8px 18px;border-radius:8px;border:1px solid #ddd;background:white;cursor:pointer">Cancelar</button>
+            <button id="xlsxConfirm" style="padding:8px 18px;border-radius:8px;border:none;background:#1565c0;color:white;font-weight:700;cursor:pointer">Importar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(confirmDiv);
+
+      document.getElementById('xlsxCancel').onclick = () => {
+        document.body.removeChild(confirmDiv);
+        closeImportModal();
+      };
+
+      document.getElementById('xlsxConfirm').onclick = () => {
+        const selMonth = parseInt(document.getElementById('xlsxMonth').value);
+        const selYear  = parseInt(document.getElementById('xlsxYear').value);
+        document.body.removeChild(confirmDiv);
+
+        // Parseia cada aba
+        const newData = { ganhos:[], fixas:[], variaveis:[], doacoes:[] };
+        const sheetMap = {
+          'Ganhos': 'ganhos', 'Fixas': 'fixas',
+          'Variáveis': 'variaveis', 'Doações': 'doacoes'
+        };
+
+        wb.SheetNames.forEach(sheetName => {
+          const secKey = sheetMap[sheetName];
+          if (!secKey) return;
+          const ws = wb.Sheets[sheetName];
+          const rows = XLSX.utils.sheet_to_json(ws, {header:1});
+          // Linha 0 = título, linha 1 = cabeçalho, linha 2+ = dados
+          for (let r = 2; r < rows.length; r++) {
+            const row = rows[r];
+            if (!row || row.length < 3) continue;
+            const desc = String(row[0]||'').trim();
+            const dia  = String(row[1]||'').trim();
+            const val  = parseFloat(row[2]||0);
+            if (!desc) continue;
+            // Pula linhas automáticas de doação (serão recalculadas)
+            if (secKey === 'doacoes' && (desc.includes('Dízimo') || desc.includes('SOS Bichos')) && desc.includes('auto')) continue;
+            newData[secKey].push({ desc, dia: dia === '—' ? '' : dia, val: isNaN(val)?'':val });
+          }
+        });
+
+        saveData(selYear, selMonth, newData);
+        // Navega para o mês importado
+        currentYear = selYear;
+        currentMonth = selMonth;
+        document.getElementById('yearInput').value = selYear;
+        closeImportModal();
+        renderAll();
+        alert(`🎉 XLSX importado com sucesso!\n${MONTHS[selMonth]} / ${selYear} restaurado!`);
+      };
+
+    } catch(err) {
+      alert('❌ Erro ao ler o XLSX: ' + err.message);
+    }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// Drag & drop no modal
+document.addEventListener('DOMContentLoaded', function() {
+  const drop = document.querySelector('.modal-drop');
+  drop.addEventListener('dragover', e => { e.preventDefault(); drop.style.background='#fffde7'; });
+  drop.addEventListener('dragleave', () => { drop.style.background=''; });
+  drop.addEventListener('drop', e => {
+    e.preventDefault(); drop.style.background='';
+    const file = e.dataTransfer.files[0];
+    if (file) handleImportFile({target:{files:[file]}});
+  });
+  // Fecha modal clicando fora
+  document.getElementById('importModal').addEventListener('click', function(e) {
+    if (e.target === this) closeImportModal();
+  });
+});
+
+document.getElementById('yearInput').value = currentYear;
+document.getElementById('yearInput').addEventListener('change', function() {
+  currentYear = parseInt(this.value) || new Date().getFullYear();
   renderAll();
   updateAnual();
 });
+
 renderAll();
 </script>
 </body>
